@@ -1,4 +1,6 @@
 import requests
+import base64
+import os
 
 url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
 params = {
@@ -9,17 +11,59 @@ headers = {
     "Content-Type": "application/json"
 }
 data = {
-    "text": "The first move is what sets everything in motion.",
+    "text": "My name is Ludvig and I am a climber.",
     "model_id": "eleven_multilingual_v2"
 }
 
 
 response = requests.post(url, params=params, headers=headers, json=data)
-print(response)
-print('Test Ludvig ändring')
+ 
 if response.status_code == 200:
-    with open("output_NEW_2.mp3", "wb") as f:
+    with open("Audio_File.mp3", "wb") as f:
         f.write(response.content)
-    print("Audio saved as output.mp3")
+    print("Audio saved as Audio_File.mp3")
 else:
     print(f"Error: {response.status_code}, {response.text}")
+
+ 
+# GitHub repository details
+TOKEN = "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"# "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"  # Use a secure method to store your token
+
+REPO_OWNER = "Ludvigdfl"
+REPO_NAME = "Climber-Vasaloppet"
+IMAGE_PATH = "Audio_File.mp3" # Local path to the image
+GITHUB_IMAGE_PATH = "Audio_File.mp3"  # Path in the repository
+BRANCH = "main"  # Change if needed
+
+# GitHub API URL
+url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{GITHUB_IMAGE_PATH}"
+
+# Read and encode the image in Base64
+with open(IMAGE_PATH, "rb") as img_file:
+    image_content = base64.b64encode(img_file.read()).decode("utf-8")
+
+# Check if file already exists (needed for updates)
+headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
+response = requests.get(url, headers=headers)
+
+# Prepare data for upload
+data = {
+    "message": "Upload image via GitHub Actions",
+    "content": image_content,
+    "branch": BRANCH
+}
+
+if response.status_code == 200:
+    # File exists, update it
+    sha = response.json().get("sha")  # Get the SHA of the existing file
+    data["sha"] = sha  # Add SHA to the data for the update
+    response = requests.put(url, json=data, headers=headers)
+else:
+    # File does not exist, create it
+    response = requests.put(url, json=data, headers=headers)
+
+# Check response status
+if response.status_code in [200, 201]:
+    print("✅ Image successfully uploaded to GitHub!")
+else:
+    print(f"❌ Failed to upload image: {response.json()}")
