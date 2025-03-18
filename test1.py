@@ -34,7 +34,7 @@ TOKEN = "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"
 
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
-IMAGE_PATH = r"https://github.com/Ludvigdfl/Climber-Vasaloppet/blob/main/Petersson-Ahrholt,%20Magnus.png?raw=true"  # Local path to the image
+IMAGE_PATH = r"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/De%20Fine%20Licht%2C%20Ludvig.png"  # Local path to the image
 GITHUB_IMAGE_PATH = "TO_GIT_NEW.png"  # Path in the repository
 BRANCH = "main"  # Change if needed
 
