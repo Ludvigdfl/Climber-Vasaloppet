@@ -12,3 +12,13 @@ data = {
     "text": "The first move is what sets everything in motion.",
     "model_id": "eleven_multilingual_v2"
 }
+
+
+response = requests.post(url, params=params, headers=headers, json=data)
+print(response)
+if response.status_code == 200:
+    with open("output_NEW_2.mp3", "wb") as f:
+        f.write(response.content)
+    print("Audio saved as output.mp3")
+else:
+    print(f"Error: {response.status_code}, {response.text}")
