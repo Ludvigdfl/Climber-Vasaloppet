@@ -1,0 +1,19 @@
+name: Run My Script
+
+on:
+  push:
+    branches:
+      - main  # Runs on every push to the main branch
+  workflow_dispatch:  # Allows manual trigger via API or UI
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run my script
+        run: |
+          echo "Hello from GitHub Actions!"
+          python App.py  # Run a Python script (example)
