@@ -16,4 +16,4 @@ jobs:
       - name: Run my script
         run: |
           echo "Hello from GitHub Actions!"
-          python App.py  # Run a Python script (example)
+          python test1.py  # Run a Python script (example)
