@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'RUN_COMPLETE.txt'
 
 jobs:
   upload-audio:
