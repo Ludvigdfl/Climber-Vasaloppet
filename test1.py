@@ -2,6 +2,33 @@ import requests
 import base64
 import os
 
+TOKEN = os.getenv("GITHUB_TOKEN")
+
+if not TOKEN:
+    print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
+    exit(1)
+    
+REPO_OWNER = "Ludvigdfl"
+REPO_NAME = "Climber-Vasaloppet"
+GITHUB_FILE_PATH = "file.txt"  # Path in the repository
+BRANCH = "main"
+
+# GitHub API URL
+url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{GITHUB_FILE_PATH}"
+
+# Prepare headers
+headers = {
+    "Authorization": f"Bearer {TOKEN}",
+    "Accept": "application/vnd.github.v3+json"
+}
+
+response = requests.get(url, headers=headers)
+
+resp = response.json()
+text_endcoded = resp["content"]
+decoded_bytes = base64.b64decode(text_endcoded) 
+ 
+TEXT = decoded_bytes.decode("utf-8")
 
 url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
 params = {
@@ -12,7 +39,7 @@ headers = {
     "Content-Type": "application/json"
 }
 data = {
-    "text": "My name is Ludvig and I am a climber. During the weekends, I play a lot of pickleball and playstation.",
+    "text": f"{TEXT}",
     "model_id": "eleven_multilingual_v2"
 }
 
@@ -27,13 +54,6 @@ if response.status_code == 200:
 else:
     print(f"Error: {response.status_code}, {response.text}")
 
- 
- 
-TOKEN = os.getenv("GITHUB_TOKEN")
-
-if not TOKEN:
-    print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
-    exit(1)
 
 
 REPO_OWNER = "Ludvigdfl"
