@@ -2,40 +2,46 @@ import requests
 import base64
 import os
 
-# url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
-# params = {
-#     "output_format": "mp3_44100_128"
-# }
-# headers = {
-#     "xi-api-key": "sk_27d90cbdc065f1a1cc3ff8fb8f5c0c18f9089514b7230c3a",
-#     "Content-Type": "application/json"
-# }
-# data = {
-#     "text": "My name is Ludvig and I am a climber.",
-#     "model_id": "eleven_multilingual_v2"
-# }
+
+url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
+params = {
+    "output_format": "mp3_44100_128"
+}
+headers = {
+    "xi-api-key": "sk_27d90cbdc065f1a1cc3ff8fb8f5c0c18f9089514b7230c3a",
+    "Content-Type": "application/json"
+}
+data = {
+    "text": "My name is Ludvig and I am a climber.",
+    "model_id": "eleven_multilingual_v2"
+}
 
 
-# response = requests.post(url, params=params, headers=headers, json=data)
+response = requests.post(url, params=params, headers=headers, json=data)
+IMAGE_PATH = "Audio_File.mp3"
+
+if response.status_code == 200:
+    with open(IMAGE_PATH , "wb") as f:
+        f.write(response.content)
+    print("Audio saved as Audio_File2.mp3")
+else:
+    print(f"Error: {response.status_code}, {response.text}")
+
  
-# if response.status_code == 200:
-#     with open("Audio_File.mp3", "wb") as f:
-#         f.write(response.content)
-#     print("Audio saved as Audio_File.mp3")
-# else:
-#     print(f"Error: {response.status_code}, {response.text}")
 
- 
-# GitHub repository details
+
+
+
 # GitHub repository details
 TOKEN = "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"  # Use a secure method to store your token
 TOKEN = "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"
+TOKEN = "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"
 
 
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
-IMAGE_PATH = r"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/De%20Fine%20Licht%2C%20Ludvig.png"  # Local path to the image
-GITHUB_IMAGE_PATH = "TO_GIT_NEW.png"  # Path in the repository
+IMAGE_PATH = IMAGE_PATH # Local path to the image
+GITHUB_IMAGE_PATH = "TO_GIT_NEW.mp3"  # Path in the repository
 BRANCH = "main"  # Change if needed
 
 # GitHub API URL
@@ -70,4 +76,3 @@ if response.status_code in [200, 201]:
     print("✅ Image successfully uploaded to GitHub!")
 else:
     print(f"❌ Failed to upload image: {response.json()}")
-
