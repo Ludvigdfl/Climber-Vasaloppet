@@ -1,19 +1,30 @@
-name: Run My Script
+name: Upload Audio to GitHub
 
 on:
   push:
     branches:
-      - main  # Runs on every push to the main branch
-  workflow_dispatch:  # Allows manual trigger via API or UI
+      - main
 
 jobs:
-  run-script:
+  upload-audio:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
 
-      - name: Run my script
-        run: |
-          echo "Hello from GitHub Actions!"
-          python test1.py  # Run a Python script (example)
+    permissions: 
+      contents: write  # Required for modifying repo contents
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Upload Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub Actions Token
+        run: python your_script.py
