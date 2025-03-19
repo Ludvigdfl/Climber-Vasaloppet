@@ -12,36 +12,29 @@ headers = {
     "Content-Type": "application/json"
 }
 data = {
-    "text": "My name is Ludvig and I am a climber.",
+    "text": "My name is Ludvig and I am a climber. During the weekends, I play a lot of pickleball and playstation.",
     "model_id": "eleven_multilingual_v2"
 }
 
 
 response = requests.post(url, params=params, headers=headers, json=data)
-IMAGE_PATH = "Audio_File.mp3"
+IMAGE_PATH = "Audio_File_NEW.mp3"
 
 if response.status_code == 200:
     with open(IMAGE_PATH , "wb") as f:
         f.write(response.content)
-    print("Audio saved as Audio_File2.mp3")
+    print("Audio saved as Audio_File_NEW.mp3")
 else:
     print(f"Error: {response.status_code}, {response.text}")
 
  
-
-
-
-
-# GitHub repository details
-TOKEN = "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"  # Use a secure method to store your token
-TOKEN = "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"
-TOKEN = "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"
-
+ 
+TOKEN = "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"
 
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
-IMAGE_PATH = IMAGE_PATH # Local path to the image
-GITHUB_IMAGE_PATH = "TO_GIT_NEW.mp3"  # Path in the repository
+IMAGE_PATH = "Audio_File_NEW.mp3"
+GITHUB_IMAGE_PATH = "Audio_File_NEW.mp3"  # Path in the repository
 BRANCH = "main"  # Change if needed
 
 # GitHub API URL
