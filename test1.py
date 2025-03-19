@@ -40,7 +40,8 @@ headers = {
 }
 data = {
     "text": f"{TEXT}",
-    "model_id": "eleven_multilingual_v2"
+    "model_id": "eleven_multilingual_v2",
+    "voice_id": "UgBBYS2sOqTuMpoF3BR0"
 }
 
 
