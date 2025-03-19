@@ -29,7 +29,12 @@ else:
 
  
  
-TOKEN = "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"
+TOKEN = os.getenv("GITHUB_TOKEN")
+
+if not TOKEN:
+    print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
+    exit(1)
+
 
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
