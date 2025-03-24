@@ -46,12 +46,12 @@ data = {
 
 
 response = requests.post(url, params=params, headers=headers, json=data)
-IMAGE_PATH = "Audio_File_NEW.mp3"
+IMAGE_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
 
 if response.status_code == 200:
     with open(IMAGE_PATH , "wb") as f:
         f.write(response.content)
-    print("Audio saved as Audio_File_NEW.mp3")
+    print(f"Audio saved as {IMAGE_PATH}")
 else:
     print(f"Error: {response.status_code}, {response.text}")
 
@@ -60,7 +60,7 @@ else:
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
 IMAGE_PATH = "Audio_File_NEW.mp3"
-GITHUB_IMAGE_PATH = "Audio_File_NEW.mp3"  # Path in the repository
+GITHUB_IMAGE_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
 BRANCH = "main"  # Change if needed
 
 # GitHub API URL
