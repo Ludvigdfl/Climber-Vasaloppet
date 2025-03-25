@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'RUN_COMPLETE_*'
+      - 'RUN_COMPLETE.*'
 
 jobs:
   upload-audio:
