@@ -5,20 +5,22 @@ import datetime
 import time
 
 TOKEN = os.getenv("GITHUB_TOKEN")
-
 if not TOKEN:
     print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
     exit(1)
     
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
-GITHUB_FILE_PATH = "file.txt"  # Path in the repository
+TEXT_FILE = "file.txt"   
 BRANCH = "main"
 
-# GitHub API URL
-url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{GITHUB_FILE_PATH}"
 
-# Prepare headers
+##############################################
+### 1. Get text file to create speach from ###
+##############################################
+
+url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{TEXT_FILE}"
+
 headers = {
     "Authorization": f"Bearer {TOKEN}",
     "Accept": "application/vnd.github.v3+json"
@@ -32,6 +34,11 @@ decoded_bytes = base64.b64decode(text_endcoded)
  
 TEXT = decoded_bytes.decode("utf-8")
 print("TEXT to genereate speach for:\n", TEXT)
+
+
+###################################################
+### 2. Send the TEXT to Elevenlabs to get Audio ###
+###################################################
 
 url = "https://api.elevenlabs.io/v1/text-to-speech/pqHfZKP75CvOlQylNhV4"
 params = {
@@ -47,31 +54,36 @@ data = {
     "voice_id": "pqHfZKP75CvOlQylNhV4"
 }
 
-
 response = requests.post(url, params=params, headers=headers, json=data)
-IMAGE_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
+AUDIO_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
+
+
+####################################
+### 3. Store the Audio to a file ###
+####################################
 
 if response.status_code == 200:
-    with open(IMAGE_PATH , "wb") as f:
+    with open(AUDIO_PATH , "wb") as f:
         f.write(response.content)
-    print(f"Audio saved as {IMAGE_PATH}")
+    print(f"Audio saved as {AUDIO_PATH}")
 else:
     print(f"Error: {response.status_code}, {response.text}")
 
 
+########################################
+### 4. Push the Audio file to Github ###
+########################################
 
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
-IMAGE_PATH = "Audio_File_NEW.mp3"
 GITHUB_IMAGE_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
-BRANCH = "main"  # Change if needed
+BRANCH = "main"   
 
-# GitHub API URL
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{GITHUB_IMAGE_PATH}"
 
-# Read and encode the image in Base64
-with open(IMAGE_PATH, "rb") as img_file:
-    image_content = base64.b64encode(img_file.read()).decode("utf-8")
+# Read and encode the audio file
+with open(GITHUB_IMAGE_PATH, "rb") as img_file:
+    audio_content = base64.b64encode(img_file.read()).decode("utf-8")
 
 # Check if file already exists (needed for updates)
 headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
@@ -79,8 +91,8 @@ response = requests.get(url, headers=headers)
 
 # Prepare data for upload
 data = {
-    "message": "Upload image via GitHub Actions",
-    "content": image_content,
+    "message": "Upload audio via GitHub Actions",
+    "content": audio_content,
     "branch": BRANCH
 }
 
