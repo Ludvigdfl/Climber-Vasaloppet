@@ -31,6 +31,7 @@ text_endcoded = resp["content"]
 decoded_bytes = base64.b64decode(text_endcoded) 
  
 TEXT = decoded_bytes.decode("utf-8")
+print("TEXT to genereate speach for:\n", TEXT)
 
 url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
 params = {
