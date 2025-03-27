@@ -1,7 +1,7 @@
-Hello and welcome! Today is Thursday, March 27, 2025. Here’s a quick report on our sales performance over the last week.
+Welcome! Today is Thursday, March 27, 2025. Here’s your sales report for the last week.
 
-Total sales reached 54,000, with the cost of sales at 39,000, resulting in a margin of 28.0%. The average sales per salesperson stood at 6,000. Notably, March 23 was a significant day, often referred to as "Black Tuesday," with sales peaking at nearly 10,000 before hitting a low of around 6,300 the following day.
+In total, sales reached 54,000, with a cost of sales at 39,000, resulting in a margin of 28.0%. The average sales per person were 6,000. Sales saw significant peaks, particularly on March 25, where sales spiked to 10,000, up from 8,000 the previous day. The highest individual sales were recorded by Sofia Lund, who achieved 14,000.
 
-When looking at performance by individual salespeople, Sofia Lund led with an impressive 14,000 in sales, followed by Emma Johansson with 9,200 and Erik Olsen at 8,600. The sales distribution by country showed strong contributions from the Nordics, particularly Sweden, which held the highest volume.
+Across the week, the distribution of sales showed consistency; however, notable contributors included both Sofia Lund and Emma Johansson, who drove the highest numbers. The maps indicate a strong presence in Sweden, contributing significantly to overall performance. 
 
 And that’s all for today.
