@@ -1,7 +1,7 @@
-Welcome! Today is Thursday, March 27, 2025. Here’s your sales report for the last week.
+Hello and welcome to your business insights report for Thursday, March 27, 2025. Let’s dive into the key trends from our recent dashboard snapshots.
 
-In total, sales reached 54,000, with a cost of sales at 39,000, resulting in a margin of 28.0%. The average sales per person were 6,000. Sales saw significant peaks, particularly on March 25, where sales spiked to 10,000, up from 8,000 the previous day. The highest individual sales were recorded by Sofia Lund, who achieved 14,000.
+Over the past week, total sales reached 54,000, with a cost of sales at 39,000, resulting in a profit margin of 28.0%. Each salesperson averaged sales of 6,000. On March 25, Emma Johansson led the team with 9,200 in sales, followed closely by Sofia Lund at 8,400 and Erik Olsen at 8,000. This strong performance contributed to notable sales spikes across the week.
 
-Across the week, the distribution of sales showed consistency; however, notable contributors included both Sofia Lund and Emma Johansson, who drove the highest numbers. The maps indicate a strong presence in Sweden, contributing significantly to overall performance. 
+Sales trends varied by day, most notably on Black Tuesday, where sales surged to 10,000, bouncing back from a low of 5,000 the previous day. As we review sales by country, it's evident that northern regions have performed well, particularly in Sweden, which dominates the market presence across the board.
 
 And that’s all for today.
