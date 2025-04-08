@@ -29,4 +29,4 @@ jobs:
       - name: Run Upload Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub Actions Token
-        run: python Main.py
+        run: python test.py #python Main.py
