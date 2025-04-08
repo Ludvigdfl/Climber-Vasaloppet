@@ -10,7 +10,7 @@ if not TOKEN:
     exit(1)
     
 REPO_OWNER = "Ludvigdfl"
-REPO_NAME = "Climber-Podcast"
+REPO_NAME = "Climber-Vasaloppet"
 TEXT_FILE = "Run_Text.txt"   
 BRANCH = "main"
 
