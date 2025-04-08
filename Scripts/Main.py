@@ -12,12 +12,186 @@ if not TOKEN:
 ##############################################
 ### 1. Get nr of Frames from file          ###
 ##############################################
+def Get_Nr_Of_Frames():
+    REPO_OWNER = "Ludvigdfl"
+    REPO_NAME = "Climber-Vasaloppet"
+    TEXT_FILE = "Run_Complete.txt"   
+    BRANCH = "main"
+    
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
+    
+    headers = {
+        "Authorization": f"Bearer {TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    resp = response.json()
+    text_endcoded = resp["content"]
+    decoded_bytes = base64.b64decode(text_endcoded) 
+     
+    return  decoded_bytes.decode("utf-8")
+
+
+###########################################
+## 2. Create the transcript from the images ##
+###########################################
+
+def Get_History(Frames):
+
+    History = ''
+
+    if(len(Frames) < 1):
+        History  = """
+            ***************************************************************    
+            THIS IS THE FIRST SNAPSHOT OF THE RACE 
+            Thus say something enhancing that, like, .... and they are off!
+            ***************************************************************
+        """
+    for index, Frame in enumerate(Frames):
+        History += f"\n\nSnapshot {index}: \n{Frame["Frame_Commentary"]}"
+
+    return History
+
+
+def Get_Final_Transcript():
+
+    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.json", mode="r") as File:
+        Frames = json.load(File)
+
+    
+    Commentary=''
+    for Frame in Frames:
+        Commentary += f'\n\n{Frame["Frame_Commentary"]}'
+        
+
+    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
+        File.write(Commentary)
+
+    return Commentary
+
+
+def Get_Final_Transcript_Adjusted(client):
+
+    Prompt = f"""
+            You are an expert ski-race tv-host.
+
+            This the transript of a ski-race called vasaloppet.
+            Each row corresponds to a time-slice of the race - i.e. the number of words equals a fixed number of seconds.
+
+            However, each row, or each comment, is too similar in style. A real commentator would alternate some more.
+            E.g. by not ending each comment with an exclemation ... exciting race! or...Intersting dynamics!
+
+            Here is the full transcript.
+            Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
+            
+            TRANSCRIPT:
+            {Get_Final_Transcript()}
+            
+        """
+    response = client.chat.completions.create(
+            
+            model="gpt-4o",
+            
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": Prompt,
+                        }
+                    ],
+                }
+            ] 
+    )
+
+    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary_Adjusted.txt", mode="w") as File:
+        File.write(response.choices[0].message.content)
+
+    return response.choices[0].message.content
+        
+
+def Call_API(Frames, client):
+
+    Frames_Added = []
+    for index, Frame in enumerate(Frames):
+
+        Prompt = f"""
+            You are an expert ski-race tv-host.
+
+            I will send you pairs of images/snapshots from the same race (the swedish ski-race Vasaloppet) 
+            Both images are captured at the same time and are thus meant to complement each other. 
+
+            The images comes from the full sequence of images building up the entire. 
+            
+            To get a smooth and natural flow of commentary, your are also going to be shown the commentary up intil the very last snapshot prior the this one. 
+            Take this into account when commenting the current snapshots.
+            
+            INSTRUCTIONS:
+            * 24 words max.
+            * Refer to the Underlying data if you think they matter. Just like a tv-host would.
+            * Don't make stuff up.
+            * Don't use shorts as km, km/h - use Kilometers and Kilometers per hour.
+            * Mix your style of commenting - i.e. don't use the same structure for each comment - e.g. by ending each comment the same stylish way e.g. with some exclemation like ... exciting race! or...Intersting dynamics!
+            * If the same person leads as seen in the previous commentary, one nice stylish comment would thus be to just say that skier X keeps his lead. Not rambeling all skiers one more time.
+            * Take into account what was said before.
+
+            This is the last 5 Comments from the sequence:
+            {Get_History(Frames_Added[-5:])}
+        """
 
 
 
-##############################################
-### 2. Functions to generate the transcript###
-##############################################
+        response = client.chat.completions.create(
+            
+            model="gpt-4o",
+            
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": Prompt,
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame["Frame"]}.png",
+                            },
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Karta_Bilder/Karta_{Frame["Frame"]}.png",
+                            },
+                        },
+                    ],
+                }
+            ],
+            max_tokens=500,
+        )
+
+        Frames_Added.append(
+            {
+                "Frame" : Frame["Frame"], 
+                "Frame_Commentary" : response.choices[0].message.content
+            }
+        )
+    
+    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.json", mode="w") as File:
+        json.dump(Frames_Added, File, indent=4)
+
+
+def main():
+    
+    Call_API(Get_Nr_Of_Frames(), client)
+
+    Get_Final_Transcript()
+
+    Get_Final_Transcript_Adjusted(client) 
 
 
 REPO_OWNER = "Ludvigdfl"
