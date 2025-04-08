@@ -75,7 +75,7 @@ else:
 ########################################
 
 REPO_OWNER = "Ludvigdfl"
-REPO_NAME = "Climber-Podcast"
+REPO_NAME = "Climber-Vasaloppet"
 GITHUB_AUDIO = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
 BRANCH = "main"   
 
