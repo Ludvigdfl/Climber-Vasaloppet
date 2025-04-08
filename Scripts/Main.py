@@ -222,7 +222,7 @@ def Get_Text_To_TTS():
 
 def main():
 
-    client = OpenAI(api_key="sk-HfMxB6YZmIfo7jYv4QnCpIrycxA2Knt5exvxyPrbP8T3BlbkFJFj1TVyMn-1hsTVcE0BZq_FWbN9HOMXwz3nimGxxDcA")
+    client = OpenAI(api_key = OPEN_AI_API)
 
     Call_API(Get_Nr_Of_Frames(), client)
 
