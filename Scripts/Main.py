@@ -8,7 +8,18 @@ TOKEN = os.getenv("GITHUB_TOKEN")
 if not TOKEN:
     print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
     exit(1)
-    
+
+##############################################
+### 1. Get nr of Frames from file          ###
+##############################################
+
+
+
+##############################################
+### 2. Functions to generate the transcript###
+##############################################
+
+
 REPO_OWNER = "Ludvigdfl"
 REPO_NAME = "Climber-Vasaloppet"
 TEXT_FILE = "Run_Text.txt"   
