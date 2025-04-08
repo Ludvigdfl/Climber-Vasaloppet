@@ -9,6 +9,7 @@ if not TOKEN:
     print("❌ GitHub token not found. Make sure you're running this in GitHub Actions.")
     exit(1)
 
+
 ##############################################
 ### 1. Get nr of Frames from file          ###
 ##############################################
@@ -57,9 +58,8 @@ def Get_History(Frames):
 
 def Get_Final_Transcript():
 
-    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.json", mode="r") as File:
+    with open(file=r"Commentary.json", mode="r") as File:
         Frames = json.load(File)
-
     
     Commentary=''
     for Frame in Frames:
@@ -107,8 +107,8 @@ def Get_Final_Transcript_Adjusted(client):
             ] 
     )
 
-    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary_Adjusted.txt", mode="w") as File:
-        File.write(response.choices[0].message.content)
+    with open(file=r"Commentary_Adjusted.txt", mode="w") as File:
+        File.write(response.choices[0].message.content))
 
     return response.choices[0].message.content
         
@@ -181,12 +181,43 @@ def Call_API(Frames, client):
             }
         )
     
-    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.json", mode="w") as File:
+    with open(file=r"Commentary.json", mode="w") as File:
         json.dump(Frames_Added, File, indent=4)
 
 
-def main():
+def Get_Text_To_TTS():
     
+    REPO_OWNER = "Ludvigdfl"
+    REPO_NAME = "Climber-Vasaloppet"
+    TEXT_FILE = "Commentary_Adjusted.txt"   
+    BRANCH = "main"
+    
+    
+    ##############################################
+    ### 1. Get text file to create speach from ###
+    ##############################################
+    
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
+    
+    headers = {
+        "Authorization": f"Bearer {TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    resp = response.json()
+    text_endcoded = resp["content"]
+    decoded_bytes = base64.b64decode(text_endcoded) 
+     
+    TEXT = decoded_bytes.decode("utf-8")
+    print("TEXT to genereate speach for:\n", TEXT)
+
+
+def main():
+
+    client = OpenAI(api_key="sk-HfMxB6YZmIfo7jYv4QnCpIrycxA2Knt5exvxyPrbP8T3BlbkFJFj1TVyMn-1hsTVcE0BZq_FWbN9HOMXwz3nimGxxDcA")
+
     Call_API(Get_Nr_Of_Frames(), client)
 
     Get_Final_Transcript()
@@ -194,31 +225,6 @@ def main():
     Get_Final_Transcript_Adjusted(client) 
 
 
-REPO_OWNER = "Ludvigdfl"
-REPO_NAME = "Climber-Vasaloppet"
-TEXT_FILE = "Run_Text.txt"   
-BRANCH = "main"
-
-
-##############################################
-### 1. Get text file to create speach from ###
-##############################################
-
-url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
-
-headers = {
-    "Authorization": f"Bearer {TOKEN}",
-    "Accept": "application/vnd.github.v3+json"
-}
-
-response = requests.get(url, headers=headers)
-
-resp = response.json()
-text_endcoded = resp["content"]
-decoded_bytes = base64.b64decode(text_endcoded) 
- 
-TEXT = decoded_bytes.decode("utf-8")
-print("TEXT to genereate speach for:\n", TEXT)
 
 
 ###################################################
