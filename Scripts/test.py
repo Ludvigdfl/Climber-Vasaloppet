@@ -104,7 +104,7 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
 
-    Content_test = Read_File(FileName = r"Scripts/Commentary.txt", "txt")
+    Content_test = Read_File(FileName = r"Scripts/Commentary.txt", "txt", TOKEN)
 
     print(Content_test)
     
