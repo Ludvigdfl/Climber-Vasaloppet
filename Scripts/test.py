@@ -71,7 +71,7 @@ def Write_File(FileName, FileType, TOKEN):
 
     print("CONTENT:", Content_File)  
     TEST = "Mitt namn är Ludvig"
-    TEST = base64.b64decode(TEST) 
+    TEST = base64.b64encode(TEST) 
     
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     response = requests.get(url, headers=headers)
