@@ -23,15 +23,15 @@ def Get_Tokens():
  
 def Read_File(File_Name, FileType):
 
-    if(FileType == 'json'):
+    if FileType == 'json':
         with open(file = File_Name, mode="r") as File:
            Data = json.load(File)
             
         return Data
         
-    if(FileType == 'txt'):
+    if FileType == 'txt':
         with open(file = File_Name, mode="r") as File:
-           Data = File.read()
+            Data = File.read()
             
         return Data
 
