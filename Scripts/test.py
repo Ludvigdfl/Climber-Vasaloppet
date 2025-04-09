@@ -34,7 +34,7 @@ print(Commentary)
 
 
 with open(file=r"Scripts/Commentary.txt", mode="w") as File:
-    File.Write(Commentary)
+    File.write(Commentary)
 
 
 
