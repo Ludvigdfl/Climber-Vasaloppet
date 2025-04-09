@@ -52,7 +52,7 @@ def Write_File_Tmp(File_Name_TMP, FileType, File_Content):
 
 
 
-def Write_File(File_Name, FileType, TOKEN):
+def Write_File(File_Name, FileType, File_Content, TOKEN):
 
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
@@ -103,5 +103,9 @@ def Write_File(File_Name, FileType, TOKEN):
 def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
+
+    
+
+    
 
 main()
