@@ -65,36 +65,36 @@ def Write_File(File_Name, FileType, TOKEN):
         with open(File_Name, "rb") as File:
             Content_File = base64.b64encode(File.read()).decode()
      
-    else:
+    if FileType == 'json':
         with open(File_Name, "rb") as File:
             Content_File = base64.b64encode(json.load(File).decode()   
 
     print("CONTENT:", Content_File)                         
-    # Check if file already exists (needed for updates)
-    headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
-    response = requests.get(url, headers=headers)
+     
+    # headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
+    # response = requests.get(url, headers=headers)
     
-    # Prepare data for upload
-    data = {
-        "message": "Upload audio via GitHub Actions",
-        "content": Content_File,
-        "branch": BRANCH
-    }
+    # # Prepare data for upload
+    # data = {
+    #     "message": "Upload audio via GitHub Actions",
+    #     "content": Content_File,
+    #     "branch": BRANCH
+    # }
     
-    if response.status_code == 200:
-        # File exists, update it
-        sha = response.json().get("sha")  # Get the SHA of the existing file
-        data["sha"] = sha  # Add SHA to the data for the update
-        response = requests.put(url, json=data, headers=headers)
-    else:
-        # File does not exist, create it
-        response = requests.put(url, json=data, headers=headers)
+    # if response.status_code == 200:
+    #     # File exists, update it
+    #     sha = response.json().get("sha")  # Get the SHA of the existing file
+    #     data["sha"] = sha  # Add SHA to the data for the update
+    #     response = requests.put(url, json=data, headers=headers)
+    # else:
+    #     # File does not exist, create it
+    #     response = requests.put(url, json=data, headers=headers)
     
-    # Check response status
-    if response.status_code in [200, 201]:
-        print("✅ Data successfully uploaded to GitHub!")
-    else:
-        print(f"❌ Failed to upload Data: {response.json()}")
+    # # Check response status
+    # if response.status_code in [200, 201]:
+    #     print("✅ Data successfully uploaded to GitHub!")
+    # else:
+    #     print(f"❌ Failed to upload Data: {response.json()}")
 
 
 
