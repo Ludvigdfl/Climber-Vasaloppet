@@ -20,35 +20,8 @@ def Get_Tokens():
         exit(1)
 
     return TOKEN, OPEN_AI_API
- 
-# def ReadFile(FileName, FileType):
-
-#     if FileType == 'json':
-#         with open(file = FileName, mode="r") as File:
-#            Data = json.load(File)
-            
-#         return Data
-        
-#     if FileType == 'txt':
-#         with open(file = FileName, mode="r") as File:
-#             Data = File.read()
-            
-#         return Data
 
 
-# def Write_File_Tmp(FileName_TMP, FileType, File_Content):
-
-#     if FileType == 'json':
-#         with open(file = FileName_TMP, mode="r") as File:
-#             json.dump(File_Content, FileName_TMP)
-            
-#         return Data
-        
-#     if FileType == 'txt':
-#         with open(file = FileName_TMP, mode="r") as File:
-#             File.write(File_Content)
-            
-#         return Data
 def Read_File(FileName, TOKEN):
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
