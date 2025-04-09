@@ -49,8 +49,21 @@ def Get_Tokens():
 #             File.write(File_Content)
             
 #         return Data
+def Read_File(FileName, TOKEN):
+    REPO_OWNER   = "Ludvigdfl"
+    REPO_NAME    = "Climber-Vasaloppet"
+    File_Name    =  FileName
+    BRANCH       = "main"   
+    
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
+ 
+    headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
+    response = requests.get(url, headers=headers)
 
+    content_as_base64 = response.json()['content']
+    content = base64.b64decode(content_as_base64).decode()
 
+    return content
 
 def Write_File(FileName, FileType, FileContent, TOKEN):
 
@@ -94,7 +107,10 @@ def Write_File(FileName, FileType, FileContent, TOKEN):
 def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
-
+    
+    content = Read_File(FileName = r"Scripts/Commentary.txt",  TOKEN = TOKEN)
+    print(Content)
+    
     Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", FileContent = "Hej mitt namn är Ludvig och jag gillar att spela", TOKEN = TOKEN)
  
     
