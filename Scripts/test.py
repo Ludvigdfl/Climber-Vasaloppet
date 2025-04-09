@@ -43,7 +43,7 @@ url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{
 
 # Read and encode the audio file
 with open(FILE_TMP, "r") as File:
-    Content_File = base64.b64encode(File.read()).decode("utf-8")
+    Content_File = File.read()
 
 # Check if file already exists (needed for updates)
 headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
