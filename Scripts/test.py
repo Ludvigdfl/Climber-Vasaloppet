@@ -108,10 +108,11 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
+    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", FileContent = "Hej go o gla", TOKEN = TOKEN)
+
     content = Read_File(FileName = r"Scripts/Commentary.txt",  TOKEN = TOKEN)
     print(content)
     
-    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", FileContent = "Hej mitt namn är Ludvig och jag gillar att spela", TOKEN = TOKEN)
  
     
 
