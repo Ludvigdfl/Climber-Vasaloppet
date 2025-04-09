@@ -52,24 +52,24 @@ def Write_File_Tmp(File_Name_TMP, FileType, File_Content):
 
 
 
-def Write_File(File_Name, FileType, File_Content, TOKEN):
+def Write_File(File_Name, FileType, TOKEN):
 
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
-    FILE         =  File_Name
+    File_Name    =  File_Name
     BRANCH       = "main"   
     
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{FILE}"
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{File_Name}"
 
     if FileType == 'txt':
-        with open(FILE_TMP, "rb") as File:
+        with open(File_Name, "rb") as File:
             Content_File = base64.b64encode(File.read()).decode()
      
     else:
-        with open(FILE_TMP, "rb") as File:
+        with open(File_Name, "rb") as File:
             Content_File = base64.b64encode(json.load(File).decode()   
 
-                                            
+    print("CONTENT:", Content_File)                         
     # Check if file already exists (needed for updates)
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     response = requests.get(url, headers=headers)
@@ -104,11 +104,8 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
 
-    Content_test = Read_File(FileName = r"Scripts/Commentary.txt", "txt", TOKEN)
-
-    print(Content_test)
-    
-
+    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", TOKEN = TOKEN)
+ 
     
 
 main()
