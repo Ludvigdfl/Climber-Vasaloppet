@@ -38,15 +38,15 @@ def Read_File(File_Name, FileType):
 
 def Write_File_Tmp(File_Name_TMP, FileType, File_Content):
 
-     if(FileType == 'json'):
+    if FileType == 'json':
         with open(file = File_Name_TMP, mode="r") as File:
-           json.dump(File_Content, File_Name_TMP)
+            json.dump(File_Content, File_Name_TMP)
             
         return Data
         
-    if(FileType == 'txt'):
+    if FileType == 'txt':
         with open(file = File_Name_TMP, mode="r") as File:
-           File.write(File_Content)
+            File.write(File_Content)
             
         return Data
 
@@ -61,7 +61,7 @@ def Write_File(File_Name, FileType, File_Content, TOKEN):
     
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{FILE}"
 
-    if(FileType == 'txt'):
+    if FileType == 'txt':
         with open(FILE_TMP, "rb") as File:
             Content_File = base64.b64encode(File.read()).decode()
      
