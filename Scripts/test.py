@@ -22,7 +22,7 @@ print(OPEN_AI_API)
 
 
 
-with open(file=r"Commentary.json", mode="r") as File:
+with open(file=r"Scripts/Commentary.json", mode="r") as File:
     Frames = json.load(File)
 
 Commentary=''
