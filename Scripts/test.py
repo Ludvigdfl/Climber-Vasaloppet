@@ -26,7 +26,7 @@ for Frame in Frames:
     
 print(Commentary)
 
-FILE_TMP  = r"Scripts/Commentary_TEMP.txt" 
+FILE_TMP  = "Scripts/Commentary_TEMP.txt" 
 
 with open(file= FILE_TMP, mode="w") as File:
     File.write(Commentary)
