@@ -21,65 +21,54 @@ def Get_Tokens():
 
     return TOKEN, OPEN_AI_API
  
-def ReadFile(FileName, FileType):
+# def ReadFile(FileName, FileType):
 
-    if FileType == 'json':
-        with open(file = FileName, mode="r") as File:
-           Data = json.load(File)
+#     if FileType == 'json':
+#         with open(file = FileName, mode="r") as File:
+#            Data = json.load(File)
             
-        return Data
+#         return Data
         
-    if FileType == 'txt':
-        with open(file = FileName, mode="r") as File:
-            Data = File.read()
+#     if FileType == 'txt':
+#         with open(file = FileName, mode="r") as File:
+#             Data = File.read()
             
-        return Data
+#         return Data
 
 
-def Write_File_Tmp(FileName_TMP, FileType, File_Content):
+# def Write_File_Tmp(FileName_TMP, FileType, File_Content):
 
-    if FileType == 'json':
-        with open(file = FileName_TMP, mode="r") as File:
-            json.dump(File_Content, FileName_TMP)
+#     if FileType == 'json':
+#         with open(file = FileName_TMP, mode="r") as File:
+#             json.dump(File_Content, FileName_TMP)
             
-        return Data
+#         return Data
         
-    if FileType == 'txt':
-        with open(file = FileName_TMP, mode="r") as File:
-            File.write(File_Content)
+#     if FileType == 'txt':
+#         with open(file = FileName_TMP, mode="r") as File:
+#             File.write(File_Content)
             
-        return Data
+#         return Data
 
 
 
-def Write_File(FileName, FileType, TOKEN):
+def Write_File(FileName, FileType, FileContent, TOKEN):
 
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
     File_Name    =  FileName
     BRANCH       = "main"   
     
+    encoded = base64.b64encode(FileContent.encode()).decode()
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
-
-    if FileType == 'txt':
-        with open(File_Name, "rb") as File:
-            Content_File = base64.b64encode(File.read()).decode()
-     
-    if FileType == 'json':
-        with open(File_Name, "rb") as File:
-            Content_File = base64.b64encode(json.load(File).decode())   
-
-    print("CONTENT:", Content_File)  
-    TEST = "Mitt namn är Ludvig"
-    TEST = base64.b64encode(TEST) 
-    
+ 
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     response = requests.get(url, headers=headers)
     
     # Prepare data for upload
     data = {
         "message": "Upload audio via GitHub Actions",
-        "content": TEST,
+        "content": encoded,
         "branch": BRANCH
     }
     
@@ -106,7 +95,7 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
 
-    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", TOKEN = TOKEN)
+    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", FileContent = "Hej mitt namn är Ludvig och jag gillar att spela", TOKEN = TOKEN)
  
     
 
