@@ -18,3 +18,15 @@ if not OPEN_AI_API:
     exit(1)
 
 print(OPEN_AI_API)
+
+
+
+
+with open(file=r"Commentary.json", mode="r") as File:
+    Frames = json.load(File)
+
+Commentary=''
+for Frame in Frames:
+    Commentary += f'\n\n{Frame["Frame_Commentary"]}'
+    
+print(Commentary)
