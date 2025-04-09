@@ -67,9 +67,9 @@ def Write_File(File_Name, FileType, TOKEN):
      
     if FileType == 'json':
         with open(File_Name, "rb") as File:
-            Content_File = base64.b64encode(json.load(File).decode()   
+            Content_File = base64.b64encode(json.load(File).decode())   
 
-    # print("CONTENT:", Content_File)                         
+    print("CONTENT:", Content_File)                         
      
     # headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     # response = requests.get(url, headers=headers)
