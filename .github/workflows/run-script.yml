@@ -29,4 +29,5 @@ jobs:
       - name: Run Upload Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub Actions Token
+          OPEN_AI_API: ${{ secrets.OPEN_AI_API }}
         run: python test.py #python Main.py
