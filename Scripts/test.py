@@ -59,7 +59,7 @@ def Write_File(File_Name, FileType, TOKEN):
     File_Name    =  File_Name
     BRANCH       = "main"   
     
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{File_Name}"
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
 
     if FileType == 'txt':
         with open(File_Name, "rb") as File:
