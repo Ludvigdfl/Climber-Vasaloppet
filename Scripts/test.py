@@ -69,15 +69,17 @@ def Write_File(FileName, FileType, TOKEN):
         with open(File_Name, "rb") as File:
             Content_File = base64.b64encode(json.load(File).decode())   
 
-    print("CONTENT:", Content_File)                         
-     
+    print("CONTENT:", Content_File)  
+    TEST = "Mitt namn är Ludvig"
+    TEST = base64.b64decode(TEST) 
+    
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     response = requests.get(url, headers=headers)
     
     # Prepare data for upload
     data = {
         "message": "Upload audio via GitHub Actions",
-        "content": Content_File,
+        "content": TEST,
         "branch": BRANCH
     }
     
