@@ -3,7 +3,7 @@ import base64
 import os
 import datetime
 import time
-import openai 
+from openai import OpenAI
 
 ###################################################
 ###############   Helper Functions  ###############
@@ -257,7 +257,7 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
-    CLIENT = openai(api_key = OPEN_AI_API)
+    CLIENT = OpenAI(api_key = OPEN_AI_API)
     
     Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
     Frame_Chunks = int(int(Total_Frames)/8)
