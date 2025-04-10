@@ -219,7 +219,7 @@ def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
             Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
             
             TRANSCRIPT:
-            {Get_Final_Transcript()}
+            {Get_Final_Transcript(TOKEN)}
             
         """
     response = CLIENT.chat.completions.create(
