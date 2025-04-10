@@ -28,6 +28,6 @@ jobs:
 
       - name: Run Upload Script
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub Actions Token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           OPEN_AI_API: ${{ secrets.OPEN_AI_API }}
-        run: python Scripts/Main.py #python Main.py
+        run: python Scripts/Main.py
