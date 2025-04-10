@@ -38,7 +38,7 @@ def Read_File(FileName, TOKEN):
 
     if File_Type == 'txt':
         content = base64.b64decode(content_as_base64).decode()
-    if File_Type == 'json'
+    if File_Type == 'json':
         content = json.loads(base64.b64decode(content_as_base64).decode())
     
     return content
