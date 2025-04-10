@@ -95,7 +95,7 @@ def main():
     Write_File(FileName = r"Scripts/Commentary.json", FileContent = [{"key1" : "1"}, {"key2" : "2"}], TOKEN = TOKEN)
 
     content = Read_File(FileName = r"Scripts/Commentary.json",  TOKEN = TOKEN)
-    content2 = Read_File(FileName = r"Scripts/Run_Text.json",  TOKEN = TOKEN)
+    content2 = Read_File(FileName = r"Scripts/Run_Text.txt",  TOKEN = TOKEN)
     print(content)
     print(content2)
  
