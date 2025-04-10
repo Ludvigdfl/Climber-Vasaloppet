@@ -256,7 +256,7 @@ def Get_Final_Transcript_Adjusted(client):
 def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
-    CLIENT = OpenAI(api_key = OPEN_AI_API)
+    # CLIENT = OpenAI(api_key = OPEN_AI_API)
     
     Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
     Frame_Chunks = int(Total_Frames/8)
@@ -271,43 +271,6 @@ def main():
     # Get_Final_Transcript_Adjusted(client) 
 
 main()
-
-
- 
-
-
-
-
-
-
-
-# def Get_Text_For_Elevenlabs():
-    
-#     REPO_OWNER = "Ludvigdfl"
-#     REPO_NAME = "Climber-Vasaloppet"
-#     TEXT_FILE = "Commentary_Adjusted.txt"   
-#     BRANCH = "main"
-    
-    
-#     ##############################################
-#     ### 1. Get text file to create speach from ###
-#     ##############################################
-    
-#     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
-    
-#     headers = {
-#         "Authorization": f"Bearer {TOKEN}",
-#         "Accept": "application/vnd.github.v3+json"
-#     }
-    
-#     response = requests.get(url, headers=headers)
-    
-#     resp = response.json()
-#     text_endcoded = resp["content"]
-#     decoded_bytes = base64.b64decode(text_endcoded) 
-     
-#     TEXT = decoded_bytes.decode("utf-8")
-#     print("TEXT to genereate speach for:\n", TEXT)
 
 
 
