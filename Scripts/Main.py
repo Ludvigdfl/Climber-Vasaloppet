@@ -4,120 +4,94 @@ import os
 import datetime
 import time
 
-TOKEN = os.getenv("GITHUB_TOKEN")
-if not TOKEN:
-    print("❌ GitHub TOKEN token not found. Make sure you're running this in GitHub Actions.")
-    exit(1)
 
-OPEN_AI_API = os.getenv("OPEN_AI_API")
-if not OPEN_AI_API:
-    print("❌ GitHub OPEN_AI_API token not found. Make sure you're running this in GitHub Actions.")
-    exit(1)
+###################################################
+###############   Helper Functions  ###############
+###################################################
 
-
-
-##############################################
-### 1. Get nr of Frames from file          ###
-##############################################
-def Get_Nr_Of_Frames():
-    REPO_OWNER = "Ludvigdfl"
-    REPO_NAME = "Climber-Vasaloppet"
-    TEXT_FILE = "Run_Complete.txt"   
-    BRANCH = "main"
+def Get_Tokens():
     
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
+    TOKEN = os.getenv("GITHUB_TOKEN")
+    if not TOKEN:
+        print("❌ GitHub TOKEN token not found. Make sure you're running this in GitHub Actions.")
+        exit(1)
+     
     
-    headers = {
-        "Authorization": f"Bearer {TOKEN}",
-        "Accept": "application/vnd.github.v3+json"
+    OPEN_AI_API = os.getenv("OPEN_AI_API")
+    if not OPEN_AI_API:
+        print("❌ GitHub OPEN_AI_API token not found. Make sure you're running this in GitHub Actions.")
+        exit(1)
+
+    return TOKEN, OPEN_AI_API
+
+
+def Read_File(FileName, TOKEN):
+    REPO_OWNER   = "Ludvigdfl"
+    REPO_NAME    = "Climber-Vasaloppet"
+    File_Name    =  FileName
+    File_Type    =  FileName.split('.')[-1]
+    BRANCH       = "main"   
+    
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
+ 
+    headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
+    response = requests.get(url, headers=headers)
+
+    content_as_base64 = response.json()['content']
+
+    if File_Type == 'txt':
+        content = base64.b64decode(content_as_base64).decode()
+    if File_Type == 'json':
+        content = json.loads(base64.b64decode(content_as_base64).decode())
+    
+    return content
+
+def Write_File(FileName, FileContent, TOKEN):
+
+    REPO_OWNER   = "Ludvigdfl"
+    REPO_NAME    = "Climber-Vasaloppet"
+    File_Name    =  FileName
+    File_Type    =  FileName.split('.')[-1]
+    BRANCH       = "main"   
+
+    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
+ 
+    headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
+    response = requests.get(url, headers=headers)
+
+
+    if File_Type == 'txt':
+        encoded = base64.b64encode(FileContent.encode()).decode()
+    if File_Type == 'json':
+        encoded = base64.b64encode(json.dumps(FileContent).encode()).decode()
+        
+    # Prepare data for upload
+    data = {
+        "message": "Upload audio via GitHub Actions",
+        "content": encoded,
+        "branch": BRANCH
     }
     
-    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        # File exists, update it
+        sha = response.json().get("sha")  # Get the SHA of the existing file
+        data["sha"] = sha  # Add SHA to the data for the update
+        response = requests.put(url, json=data, headers=headers)
+    else:
+        # File does not exist, create it
+        response = requests.put(url, json=data, headers=headers)
     
-    resp = response.json()
-    text_endcoded = resp["content"]
-    decoded_bytes = base64.b64decode(text_endcoded) 
-     
-    return  decoded_bytes.decode("utf-8")
+    # Check response status
+    if response.status_code in [200, 201]:
+        print("✅ Data successfully uploaded to GitHub!")
+    else:
+        print(f"❌ Failed to upload Data: {response.json()}")
 
 
-###########################################
-## 2. Create the transcript from the images ##
-###########################################
 
-def Get_History(Frames):
-
-    History = ''
-
-    if(len(Frames) < 1):
-        History  = """
-            ***************************************************************    
-            THIS IS THE FIRST SNAPSHOT OF THE RACE 
-            Thus say something enhancing that, like, .... and they are off!
-            ***************************************************************
-        """
-    for index, Frame in enumerate(Frames):
-        History += f"\n\nSnapshot {index}: \n{Frame["Frame_Commentary"]}"
-
-    return History
-
-
-def Get_Final_Transcript():
-
-    with open(file=r"Commentary.json", mode="r") as File:
-        Frames = json.load(File)
-    
-    Commentary=''
-    for Frame in Frames:
-        Commentary += f'\n\n{Frame["Frame_Commentary"]}'
-        
-
-    with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
-        File.write(Commentary)
-
-    return Commentary
-
-
-def Get_Final_Transcript_Adjusted(client):
-
-    Prompt = f"""
-            You are an expert ski-race tv-host.
-
-            This the transript of a ski-race called vasaloppet.
-            Each row corresponds to a time-slice of the race - i.e. the number of words equals a fixed number of seconds.
-
-            However, each row, or each comment, is too similar in style. A real commentator would alternate some more.
-            E.g. by not ending each comment with an exclemation ... exciting race! or...Intersting dynamics!
-
-            Here is the full transcript.
-            Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
-            
-            TRANSCRIPT:
-            {Get_Final_Transcript()}
-            
-        """
-    response = client.chat.completions.create(
-            
-            model="gpt-4o",
-            
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": Prompt,
-                        }
-                    ],
-                }
-            ] 
-    )
-
-    with open(file=r"Commentary_Adjusted.txt", mode="w") as File:
-        File.write(response.choices[0].message.content))
-
-    return response.choices[0].message.content
-        
+###################################################
+###############   Transform Functions  ############
+###################################################
 
 def Call_API(Frames, client):
 
@@ -187,37 +161,148 @@ def Call_API(Frames, client):
             }
         )
     
-    with open(file=r"Commentary.json", mode="w") as File:
-        json.dump(Frames_Added, File, indent=4)
+    # with open(file=r"Commentary.json", mode="w") as File:
+    #     json.dump(Frames_Added, File, indent=4)
+
+    Write_File(r"Scripts/Commentary.json", Frames_Added, TOKEN)
 
 
-def Get_Text_For_Elevenlabs():
+
+
+def Get_History(Frames):
+
+    History = ''
+
+    if(len(Frames) < 1):
+        History  = """
+            ***************************************************************    
+            THIS IS THE FIRST SNAPSHOT OF THE RACE 
+            Thus say something enhancing that, like, .... and they are off!
+            ***************************************************************
+        """
+    for index, Frame in enumerate(Frames):
+        History += f"\n\nSnapshot {index}: \n{Frame["Frame_Commentary"]}"
+
+    return History
+
+
+
+def Get_Final_Transcript(TOKEN):
+
+    Frames = Read_File(r"Scripts/Commentary.json", TOKEN)
     
-    REPO_OWNER = "Ludvigdfl"
-    REPO_NAME = "Climber-Vasaloppet"
-    TEXT_FILE = "Commentary_Adjusted.txt"   
-    BRANCH = "main"
+    Commentary=''
+    for Frame in Frames:
+        Commentary += f'\n\n{Frame["Frame_Commentary"]}' 
+    # with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
+    #     File.write(Commentary)
+
+    Write_File(r"Scripts/Commentary.txt", Commentary, TOKEN)
+
+    return Commentary
+    
+
+
+def Get_Final_Transcript_Adjusted(client):
+
+    Prompt = f"""
+            You are an expert ski-race tv-host.
+
+            This the transript of a ski-race called vasaloppet.
+            Each row corresponds to a time-slice of the race - i.e. the number of words equals a fixed number of seconds.
+
+            However, each row, or each comment, is too similar in style. A real commentator would alternate some more.
+            E.g. by not ending each comment with an exclemation ... exciting race! or...Intersting dynamics!
+
+            Here is the full transcript.
+            Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
+            
+            TRANSCRIPT:
+            {Get_Final_Transcript()}
+            
+        """
+    response = client.chat.completions.create(
+            
+            model="gpt-4o",
+            
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": Prompt,
+                        }
+                    ],
+                }
+            ] 
+    )
+
+    Commentary_Adjusted = response.choices[0].message.content
+    # with open(file=r"Commentary_Adjusted.txt", mode="w") as File:
+        # File.write(response.choices[0].message.content))
+
+    Write_File(r"Scripts/Commentary_Adjusted.txt", Commentary_Adjusted, TOKEN)
+
+    return Commentary_Adjusted
+        
+
+
+
+
+###################################################
+###############          MAIN        ##############
+###################################################
+def main():
+    
+    TOKEN, OPEN_AI_API = Get_Tokens()
+
+    Nr_Of_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
+
+    client = OpenAI(api_key = OPEN_AI_API)
+    Call_API(Nr_Of_Frames, client)
+    
+    Get_Final_Transcript()
+    # Get_Final_Transcript_Adjusted(client) 
+
+main()
+
+
+ 
+
+
+
+
+
+
+
+# def Get_Text_For_Elevenlabs():
+    
+#     REPO_OWNER = "Ludvigdfl"
+#     REPO_NAME = "Climber-Vasaloppet"
+#     TEXT_FILE = "Commentary_Adjusted.txt"   
+#     BRANCH = "main"
     
     
-    ##############################################
-    ### 1. Get text file to create speach from ###
-    ##############################################
+#     ##############################################
+#     ### 1. Get text file to create speach from ###
+#     ##############################################
     
-    url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
+#     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Scripts/{TEXT_FILE}"
     
-    headers = {
-        "Authorization": f"Bearer {TOKEN}",
-        "Accept": "application/vnd.github.v3+json"
-    }
+#     headers = {
+#         "Authorization": f"Bearer {TOKEN}",
+#         "Accept": "application/vnd.github.v3+json"
+#     }
     
-    response = requests.get(url, headers=headers)
+#     response = requests.get(url, headers=headers)
     
-    resp = response.json()
-    text_endcoded = resp["content"]
-    decoded_bytes = base64.b64decode(text_endcoded) 
+#     resp = response.json()
+#     text_endcoded = resp["content"]
+#     decoded_bytes = base64.b64decode(text_endcoded) 
      
-    TEXT = decoded_bytes.decode("utf-8")
-    print("TEXT to genereate speach for:\n", TEXT)
+#     TEXT = decoded_bytes.decode("utf-8")
+#     print("TEXT to genereate speach for:\n", TEXT)
 
 
 
@@ -294,17 +379,17 @@ def Store_Voice_Elevenlabs_Permanent():
 
 
 
-def main():
+# def main():
 
-    client = OpenAI(api_key = OPEN_AI_API)
+#     client = OpenAI(api_key = OPEN_AI_API)
 
-    Call_API(Get_Nr_Of_Frames(), client)
+#     Call_API(Get_Nr_Of_Frames(), client)
 
-    Get_Final_Transcript()
+#     Get_Final_Transcript()
 
-    Get_Final_Transcript_Adjusted(client) 
+#     Get_Final_Transcript_Adjusted(client) 
 
-    TEXT = Get_Text_For_Elevenlabs()
-    Store_Voice_Elevenlabs(TEXT)
-    Store_Voice_Elevenlabs_Permanent()
+#     TEXT = Get_Text_For_Elevenlabs()
+#     Store_Voice_Elevenlabs(TEXT)
+#     Store_Voice_Elevenlabs_Permanent()
 
