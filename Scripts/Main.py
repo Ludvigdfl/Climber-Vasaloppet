@@ -3,7 +3,7 @@ import base64
 import os
 import datetime
 import time
-
+import OpenAI
 
 ###################################################
 ###############   Helper Functions  ###############
