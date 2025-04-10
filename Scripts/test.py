@@ -26,6 +26,7 @@ def Read_File(FileName, TOKEN):
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
     File_Name    =  FileName
+    File_Type    =  FileName.split('.')[-1]
     BRANCH       = "main"   
     
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
@@ -34,23 +35,33 @@ def Read_File(FileName, TOKEN):
     response = requests.get(url, headers=headers)
 
     content_as_base64 = response.json()['content']
-    content = base64.b64decode(content_as_base64).decode()
 
+    if File_Type == 'txt':
+        content = base64.b64decode(content_as_base64).decode()
+    if File_Type == 'json'
+        content = json.loads(base64.b64decode(content_as_base64).decode())
+    
     return content
 
-def Write_File(FileName, FileType, FileContent, TOKEN):
+def Write_File(FileName, FileContent, TOKEN):
 
     REPO_OWNER   = "Ludvigdfl"
     REPO_NAME    = "Climber-Vasaloppet"
     File_Name    =  FileName
+    File_Type    =  FileName.split('.')[-1]
     BRANCH       = "main"   
-    
-    encoded = base64.b64encode(FileContent.encode()).decode()
+
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{File_Name}"
  
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
     response = requests.get(url, headers=headers)
-    
+
+
+    if File_Type == 'txt':
+        encoded = base64.b64encode(FileContent.encode()).decode()
+    if File_Type == 'json':
+        encoded = json.dumps(base64.b64encode(FileContent.encode()).decode())
+        
     # Prepare data for upload
     data = {
         "message": "Upload audio via GitHub Actions",
@@ -81,7 +92,7 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
-    Write_File(FileName = r"Scripts/Commentary.txt", FileType = "txt", FileContent = "Hej go o gla", TOKEN = TOKEN)
+    Write_File(FileName = r"Scripts/Commentary.txt", FileContent = "Hej go o gla", TOKEN = TOKEN)
 
     content = Read_File(FileName = r"Scripts/Commentary.txt",  TOKEN = TOKEN)
     print(content)
