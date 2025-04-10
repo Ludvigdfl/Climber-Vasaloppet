@@ -325,10 +325,10 @@ def main():
 
     Call_API(Frames, CLIENT, TOKEN)
     
-    Transcript = Get_Final_Transcript(TOKEN)
+    TRANSCRIPT = Get_Final_Transcript(TOKEN)
     Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
 
-    Generate_And_Store_Voice_Elevenlabs(Transcript)
+    Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN)
 
 
 main()
