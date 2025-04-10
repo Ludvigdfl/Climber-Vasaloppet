@@ -94,7 +94,7 @@ def Write_File(FileName, FileContent, TOKEN):
 ###############   Transform Functions  ############
 ###################################################
 
-def Call_API(Frames, client, TOKEN):
+def Call_API(Frames, CLIENT, TOKEN):
 
     Frames_Added = []
     for index, Frame in enumerate(Frames):
@@ -125,7 +125,7 @@ def Call_API(Frames, client, TOKEN):
 
 
 
-        response = client.chat.completions.create(
+        response = CLIENT.chat.completions.create(
             
             model="gpt-4o",
             
@@ -204,7 +204,7 @@ def Get_Final_Transcript(TOKEN):
     
 
 
-def Get_Final_Transcript_Adjusted(client, TOKEN):
+def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
 
     Prompt = f"""
             You are an expert ski-race tv-host.
@@ -222,7 +222,7 @@ def Get_Final_Transcript_Adjusted(client, TOKEN):
             {Get_Final_Transcript()}
             
         """
-    response = client.chat.completions.create(
+    response = CLIENT.chat.completions.create(
             
             model="gpt-4o",
             
@@ -267,7 +267,7 @@ def main():
     Call_API(Frames, CLIENT, TOKEN)
     
     Get_Final_Transcript(TOKEN)
-    Get_Final_Transcript_Adjusted(client, TOKEN) 
+    Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
 
 main()
 
