@@ -60,7 +60,7 @@ def Write_File(FileName, FileContent, TOKEN):
     if File_Type == 'txt':
         encoded = base64.b64encode(FileContent.encode()).decode()
     if File_Type == 'json':
-        encoded = json.dumps(base64.b64encode(FileContent.encode()).decode())
+        encoded = base64.b64encode(json.dumps(FileContent).encode()).decode()
         
     # Prepare data for upload
     data = {
