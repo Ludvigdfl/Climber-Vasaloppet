@@ -181,7 +181,7 @@ def Get_History(Frames):
             ***************************************************************
         """
     for index, Frame in enumerate(Frames):
-        History += f"\n\nSnapshot {index}: \n{Frame["Frame_Commentary"]}"
+        History += f"\n\nSnapshot {index}: \n{Frame['Frame_Commentary']}"
 
     return History
 
@@ -193,7 +193,7 @@ def Get_Final_Transcript(TOKEN):
     
     Commentary=''
     for Frame in Frames:
-        Commentary += f'\n\n{Frame["Frame_Commentary"]}' 
+        Commentary += f'\n\n{Frame['Frame_Commentary']}' 
     # with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
     #     File.write(Commentary)
 
@@ -263,7 +263,7 @@ def main():
     Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
     Frame = Frames[0] 
-    A = f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame["Frame"]}.png",
+    A = f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame['Frame']}.png",
     print(A)
     # Call_API(Frames, CLIENT)
     
