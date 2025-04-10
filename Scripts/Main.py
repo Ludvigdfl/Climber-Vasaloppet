@@ -93,7 +93,7 @@ def Write_File(FileName, FileContent, TOKEN):
 ###############   Transform Functions  ############
 ###################################################
 
-def Call_API(Frames, client):
+def Call_API(Frames, client, TOKEN):
 
     Frames_Added = []
     for index, Frame in enumerate(Frames):
@@ -203,7 +203,7 @@ def Get_Final_Transcript(TOKEN):
     
 
 
-def Get_Final_Transcript_Adjusted(client):
+def Get_Final_Transcript_Adjusted(client, TOKEN):
 
     Prompt = f"""
             You are an expert ski-race tv-host.
@@ -263,10 +263,10 @@ def main():
     Frame_Chunks = int(int(Total_Frames)/8)
     Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
-    Call_API(Frames, CLIENT)
+    Call_API(Frames, CLIENT, TOKEN)
     
-    Get_Final_Transcript()
-    Get_Final_Transcript_Adjusted(client) 
+    Get_Final_Transcript(TOKEN)
+    Get_Final_Transcript_Adjusted(client, TOKEN) 
 
 main()
 
