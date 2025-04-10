@@ -92,12 +92,12 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
-    Write_File(FileName = r"Scripts/Commentary.json", FileContent = [{"key1" : "1"}, {"key2" : "2"}], TOKEN = TOKEN)
-    Write_File(FileName = r"Scripts/Commentary.txt", FileContent = "Ludvig testar att skriva klocka 2025-04-10", TOKEN = TOKEN)
+    # Write_File(FileName = r"Scripts/Commentary.json", FileContent = [{"key1" : "1"}, {"key2" : "2"}], TOKEN = TOKEN)
+    # Write_File(FileName = r"Scripts/Commentary.txt", FileContent = "Ludvig testar att skriva klocka 2025-04-10", TOKEN = TOKEN)
     
-    content = Read_File(FileName = r"Scripts/Commentary.json",  TOKEN = TOKEN)
-    content2 = Read_File(FileName = r"Scripts/Run_Text.txt",  TOKEN = TOKEN)
-    print(content)
+    # content = Read_File(FileName = r"Scripts/Commentary.json",  TOKEN = TOKEN)
+    content2 = Read_File(FileName = r"Scripts/Run_Complete.txt",  TOKEN = TOKEN)
+    # print(content)
     print(content2)
  
     
