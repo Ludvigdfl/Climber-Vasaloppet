@@ -256,19 +256,16 @@ def Get_Final_Transcript_Adjusted(client):
 def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
-    # CLIENT = OpenAI(api_key = OPEN_AI_API)
+    CLIENT = OpenAI(api_key = OPEN_AI_API)
     
     Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
     Frame_Chunks = int(int(Total_Frames)/8)
     Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
-    Frame = Frames[0] 
-    A = f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame['Frame']}.png",
-    print(A)
-    # Call_API(Frames, CLIENT)
+    Call_API(Frames, CLIENT)
     
-    # Get_Final_Transcript()
-    # Get_Final_Transcript_Adjusted(client) 
+    Get_Final_Transcript()
+    Get_Final_Transcript_Adjusted(client) 
 
 main()
 
