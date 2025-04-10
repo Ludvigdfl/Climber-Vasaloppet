@@ -193,7 +193,7 @@ def Get_Final_Transcript(TOKEN):
     
     Commentary=''
     for Frame in Frames:
-        Commentary += f'\n\n{Frame['Frame_Commentary']}' 
+        Commentary += f"\n\n{Frame['Frame_Commentary']}" 
     # with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
     #     File.write(Commentary)
 
