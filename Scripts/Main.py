@@ -245,7 +245,7 @@ def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
 
 def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN):
 
-    url = "https://api.elevenlabs.io/v1/text-to-speech/pqHfZKP75CvOlQylNhV4"
+    url = "https://api.elevenlabs.io/v1/text-to-speech/gnPxliFHTp6OK6tcoA6i"
     params = {
         "output_format": "mp3_44100_128"
     }
@@ -256,7 +256,7 @@ def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN):
     data = {
         "text": f"{TRANSCRIPT}",
         "model_id": "eleven_multilingual_v2",
-        "voice_id": "pqHfZKP75CvOlQylNhV4"
+        "voice_id": "gnPxliFHTp6OK6tcoA6i"
     }
     
     response = requests.post(url, params=params, headers=headers, json=data)
