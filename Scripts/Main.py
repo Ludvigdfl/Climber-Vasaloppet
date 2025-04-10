@@ -139,13 +139,13 @@ def Call_API(Frames, client):
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame["Frame"]}.png",
+                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Data_Bilder/Data_{Frame['Frame']}.png",
                             },
                         },
                         {
                             "type": "image_url",
                             "image_url": {
-                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Karta_Bilder/Karta_{Frame["Frame"]}.png",
+                                "url": f"https://raw.githubusercontent.com/Ludvigdfl/Climber-Vasaloppet/refs/heads/main/Karta_Bilder/Karta_{Frame['Frame']}.png",
                             },
                         },
                     ],
