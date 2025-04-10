@@ -92,9 +92,9 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
-    Write_File(FileName = r"Scripts/Commentary.txt", FileContent = "Hej go o gla", TOKEN = TOKEN)
+    Write_File(FileName = r"Scripts/Commentary.json", FileContent = [{"key1" : "1"}, {"key2" : "2"}], TOKEN = TOKEN)
 
-    content = Read_File(FileName = r"Scripts/Commentary.txt",  TOKEN = TOKEN)
+    content = Read_File(FileName = r"Scripts/Commentary.json",  TOKEN = TOKEN)
     print(content)
     
  
