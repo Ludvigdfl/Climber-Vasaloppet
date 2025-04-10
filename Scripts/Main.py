@@ -161,10 +161,7 @@ def Call_API(Frames, CLIENT, TOKEN):
                 "Frame_Commentary" : response.choices[0].message.content
             }
         )
-    
-    # with open(file=r"Commentary.json", mode="w") as File:
-    #     json.dump(Frames_Added, File, indent=4)
-
+        
     Write_File(r"Scripts/Commentary.json", Frames_Added, TOKEN)
 
 
@@ -195,8 +192,6 @@ def Get_Final_Transcript(TOKEN):
     Commentary=''
     for Frame in Frames:
         Commentary += f"\n\n{Frame['Frame_Commentary']}" 
-    # with open(file=r"C:\Users\clldt\Documents\Climber\Project11\Commentary.txt", mode="w") as File:
-    #     File.write(Commentary)
 
     Write_File(r"Scripts/Commentary.txt", Commentary, TOKEN)
 
@@ -240,41 +235,16 @@ def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
     )
 
     Commentary_Adjusted = response.choices[0].message.content
-    # with open(file=r"Commentary_Adjusted.txt", mode="w") as File:
-        # File.write(response.choices[0].message.content))
 
     Write_File(r"Scripts/Commentary_Adjusted.txt", Commentary_Adjusted, TOKEN)
 
     return Commentary_Adjusted
         
 
+  
 
+def Generate_And_Store_Voice_Elevenlabs(Transcript):
 
-
-###################################################
-###############          MAIN        ##############
-###################################################
-def main():
-    
-    TOKEN, OPEN_AI_API = Get_Tokens()
-    
-    CLIENT = OpenAI(api_key = OPEN_AI_API)
-    
-    Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
-    Frame_Chunks = int(int(Total_Frames)/8)
-    Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
-
-    Call_API(Frames, CLIENT, TOKEN)
-    
-    Get_Final_Transcript(TOKEN)
-    Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
-
-main()
-
-
-
-def Store_Voice_Elevenlabs(TEXT):
-    
     url = "https://api.elevenlabs.io/v1/text-to-speech/pqHfZKP75CvOlQylNhV4"
     params = {
         "output_format": "mp3_44100_128"
@@ -284,7 +254,7 @@ def Store_Voice_Elevenlabs(TEXT):
         "Content-Type": "application/json"
     }
     data = {
-        "text": f"{TEXT}",
+        "text": f"{Transcript}",
         "model_id": "eleven_multilingual_v2",
         "voice_id": "pqHfZKP75CvOlQylNhV4"
     }
@@ -300,12 +270,6 @@ def Store_Voice_Elevenlabs(TEXT):
         print(f"Error: {response.status_code}, {response.text}")
 
 
-
-def Store_Voice_Elevenlabs_Permanent():
-    ########################################
-    ### 4. Push the Audio file to Github ###
-    ########################################
-    
     REPO_OWNER = "Ludvigdfl"
     REPO_NAME = "Climber-Vasaloppet"
     GITHUB_AUDIO = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
@@ -346,17 +310,28 @@ def Store_Voice_Elevenlabs_Permanent():
 
 
 
-# def main():
+###################################################
+###############          MAIN        ##############
+###################################################
+def main():
+    
+    TOKEN, OPEN_AI_API = Get_Tokens()
+    
+    CLIENT = OpenAI(api_key = OPEN_AI_API)
+    
+    Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
+    Frame_Chunks = int(int(Total_Frames)/8)
+    Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
-#     client = OpenAI(api_key = OPEN_AI_API)
+    Call_API(Frames, CLIENT, TOKEN)
+    
+    Transcript = Get_Final_Transcript(TOKEN)
+    Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
 
-#     Call_API(Get_Nr_Of_Frames(), client)
+    Generate_And_Store_Voice_Elevenlabs(Transcript)
 
-#     Get_Final_Transcript()
 
-#     Get_Final_Transcript_Adjusted(client) 
+main()
 
-#     TEXT = Get_Text_For_Elevenlabs()
-#     Store_Voice_Elevenlabs(TEXT)
-#     Store_Voice_Elevenlabs_Permanent()
 
+ 
