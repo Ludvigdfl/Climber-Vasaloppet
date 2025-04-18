@@ -112,12 +112,12 @@ def Call_API(Frames, CLIENT, TOKEN):
             
             INSTRUCTIONS:
             * 24 words max.
+            * Take the prior commentaries into account.
             * Refer to the Underlying data if you think they matter. Just like a tv-host would.
             * Don't make stuff up.
             * Don't use shorts as km, km/h - use Kilometers and Kilometers per hour.
             * Mix your style of commenting - i.e. don't use the same structure for each comment - e.g. by ending each comment the same stylish way e.g. with some exclemation like ... exciting race! or...Intersting dynamics!
             * If the same person leads as seen in the previous commentary, one nice stylish comment would thus be to just say that skier X keeps his lead. Not rambeling all skiers one more time.
-            * Take into account what was said before.
 
             This is the last 5 Comments from the sequence:
             {Get_History(Frames_Added[-5:])}
