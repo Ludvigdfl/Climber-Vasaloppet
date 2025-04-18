@@ -243,7 +243,7 @@ def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
 
   
 
-def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN):
+def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN, YEAR):
 
     url = "https://api.elevenlabs.io/v1/text-to-speech/gnPxliFHTp6OK6tcoA6i"
     params = {
@@ -260,7 +260,7 @@ def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN):
     }
     
     response = requests.post(url, params=params, headers=headers, json=data)
-    AUDIO_PATH = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
+    AUDIO_PATH = f"Audio_File_{YEAR}.mp3" #f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
     
     if response.status_code == 200:
         with open(AUDIO_PATH , "wb") as f:
@@ -272,14 +272,14 @@ def Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN):
 
     REPO_OWNER = "Ludvigdfl"
     REPO_NAME = "Climber-Vasaloppet"
-    GITHUB_AUDIO = f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
+    GITHUB_AUDIO = f"Audio_File_{YEAR}.mp3" #f"Audio_File_{datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d')}.mp3"
     BRANCH = "main"   
     
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/Audio/{GITHUB_AUDIO}"
     
     # Read and encode the audio file
-    with open(GITHUB_AUDIO, "rb") as img_file:
-        audio_content = base64.b64encode(img_file.read()).decode("utf-8")
+    with open(GITHUB_AUDIO, "rb") as file:
+        audio_content = base64.b64encode(file.read()).decode("utf-8")
     
     # Check if file already exists (needed for updates)
     headers = {"Authorization": f"Bearer {TOKEN}", "Accept": "application/vnd.github.v3+json"}
