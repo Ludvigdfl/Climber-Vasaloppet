@@ -94,7 +94,7 @@ def Write_File(FileName, FileContent, TOKEN):
 ###############   Transform Functions  ############
 ###################################################
 
-def Call_API(Frames, CLIENT, TOKEN):
+def Call_API(Frames, CLIENT, TOKEN, YEAR):
 
     Frames_Added = []
     for index, Frame in enumerate(Frames):
@@ -102,7 +102,7 @@ def Call_API(Frames, CLIENT, TOKEN):
         Prompt = f"""
             You are an expert ski-race tv-host.
 
-            I will send you pairs of images/snapshots from the same race (the swedish ski-race Vasaloppet - A 90 kilometer ski race) 
+            I will send you pairs of images/snapshots from the same race (the swedish ski-race Vasaloppet {YEAR} - A 90 kilometer ski race) 
             Both images are captured at the same time and are thus meant to complement each other. 
 
             The images comes from the full sequence of images building up the entire. 
@@ -200,12 +200,12 @@ def Get_Final_Transcript(TOKEN):
     
 
 
-def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
+def Get_Final_Transcript_Adjusted(CLIENT, TOKEN, YEAR):
 
     Prompt = f"""
             You are an experienced expert ski-race tv-host.
 
-            This the transript of the 90 kilometer ski-race vasaloppet.
+            This the transript of the 90 kilometer ski-race vasaloppet {YEAR}.
             Each row corresponds to a time-slice of the race - i.e. the number of words equals a fixed number of seconds.
 
             However, each row, or each comment, might be too similar in style. A real commentator would alternate their style of commenting.
@@ -327,13 +327,11 @@ def main():
     Frame_Chunks = int(int(Total_Frames)/8)
     Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
-    
-    Call_API(Frames, CLIENT, TOKEN)
+    YEAR = 2025
+    Call_API(Frames, CLIENT, TOKEN, YEAR)
     
     TRANSCRIPT = Get_Final_Transcript(TOKEN)
-    Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
-
-    YEAR = 2025
+    Get_Final_Transcript_Adjusted(CLIENT, TOKEN, YEAR) 
     Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN, YEAR)
 
 
