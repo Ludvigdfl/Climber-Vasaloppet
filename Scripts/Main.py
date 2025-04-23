@@ -102,7 +102,7 @@ def Call_API(Frames, CLIENT, TOKEN):
         Prompt = f"""
             You are an expert ski-race tv-host.
 
-            I will send you pairs of images/snapshots from the same race (the swedish ski-race Vasaloppet) 
+            I will send you pairs of images/snapshots from the same race (the swedish ski-race Vasaloppet - A 90 kilometer ski race) 
             Both images are captured at the same time and are thus meant to complement each other. 
 
             The images comes from the full sequence of images building up the entire. 
@@ -116,11 +116,12 @@ def Call_API(Frames, CLIENT, TOKEN):
             * Refer to the Underlying data if you think they matter. Just like a tv-host would.
             * Don't make stuff up.
             * Don't use shorts as km, km/h - use Kilometers and Kilometers per hour.
-            * Mix your style of commenting - i.e. don't use the same structure for each comment - e.g. by ending each comment the same stylish way e.g. with some exclemation like ... exciting race! or...Intersting dynamics!
-            * If the same person leads as seen in the previous commentary, one nice stylish comment would thus be to just say that skier X keeps his lead. Not rambeling all skiers one more time.
 
             This is the last 5 Comments from the sequence:
             {Get_History(Frames_Added[-5:])}
+            
+            * Now mix your style of commenting - i.e. don't use the same structure for each comment - e.g. by ending each comment the same stylish way e.g. with some exclemation like ... exciting race! or...Intersting dynamics! or .. strategies unfolding..!
+            * If the same person leads as seen in the previous commentary, one nice stylish comment would thus be to just say that skier X keeps his lead. Not rambeling all skiers one more time.
         """
 
 
