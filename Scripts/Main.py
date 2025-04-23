@@ -203,16 +203,19 @@ def Get_Final_Transcript(TOKEN):
 def Get_Final_Transcript_Adjusted(CLIENT, TOKEN):
 
     Prompt = f"""
-            You are an expert ski-race tv-host.
+            You are an experienced expert ski-race tv-host.
 
-            This the transript of a ski-race called vasaloppet.
+            This the transript of the 90 kilometer ski-race vasaloppet.
             Each row corresponds to a time-slice of the race - i.e. the number of words equals a fixed number of seconds.
 
-            However, each row, or each comment, is too similar in style. A real commentator would alternate some more.
+            However, each row, or each comment, might be too similar in style. A real commentator would alternate their style of commenting.
             E.g. by not ending each comment with an exclemation ... exciting race! or...Intersting dynamics!
 
-            Here is the full transcript.
-            Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
+           I'll send you the TRANSCRIPT.
+
+           Your job is to return a modified and smooth & natural commentary WITHOHUT changing the full length 
+           
+           Now adjust and return nothingn but the script WITHOUT modiying the lenght of the script - remember that the lenght corresponds to actual timeslices of the race.
             
             TRANSCRIPT:
             {Get_Final_Transcript(TOKEN)}
@@ -318,18 +321,20 @@ def main():
     
     TOKEN, OPEN_AI_API = Get_Tokens()
     
-    # CLIENT = OpenAI(api_key = OPEN_AI_API)
+    CLIENT = OpenAI(api_key = OPEN_AI_API)
     
-    # Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
-    # Frame_Chunks = int(int(Total_Frames)/8)
-    # Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
+    Total_Frames = Read_File(r"Scripts/Run_Complete.txt", TOKEN)
+    Frame_Chunks = int(int(Total_Frames)/8)
+    Frames       = [{"Frame" : F_C*8, "Frame_Commentary" : ""} for F_C in range(1,Frame_Chunks+1)]
 
-    # Call_API(Frames, CLIENT, TOKEN)
+    
+    Call_API(Frames, CLIENT, TOKEN)
     
     TRANSCRIPT = Get_Final_Transcript(TOKEN)
-    # Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
+    Get_Final_Transcript_Adjusted(CLIENT, TOKEN) 
 
-    Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN)
+    YEAR = 2025
+    Generate_And_Store_Voice_Elevenlabs(TRANSCRIPT, TOKEN, YEAR)
 
 
 main()
